@@ -1,0 +1,9 @@
+export * as userService from './user.service';
+export * as authService from './auth.service';
+export * as tokenService from './token.service';
+export * as contactService from './contact.service';
+export * as bmiService from './bmi.service';
+export * as workoutPlanService from './workoutPlan.service';
+export * as nutritionPlanService from './nutritionPlan.service';
+export * as userWorkoutPlanService from './userWorkoutPlan.service';
+export * as userNutritionPlanService from './userNutritionPlan.service';

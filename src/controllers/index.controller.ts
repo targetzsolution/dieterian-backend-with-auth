@@ -1,0 +1,9 @@
+export * as userController from './user.controller';
+export * as authController from './auth.controller';
+export * as contactController from './contact.controller';
+export * as bmiController from './bmi.controller';
+export * as workoutPlanController from './workoutPlan.controller';
+export * as nutritionPlanController from './nutritionPlan.controller';
+export * as userWorkoutPlanController from './userWorkoutPlan.controller';
+export * as userNutritionPlanController from './userNutritionPlan.controller';
+export * as dashboardController from './dashboard.controller';
