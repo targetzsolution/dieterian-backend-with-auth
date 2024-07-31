@@ -9,7 +9,7 @@ import tokenTypes from "../config/tokens";
 export const loginUserWithEmailAndPassword = async (email: string, password: string): Promise<UserDocument> => {
     const user: any = await userService.getUserByEmail(email);
     if (!user || !(await user.isPasswordMatch(password))) {
-        throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
+        throw new ApiError(httpStatus.BAD_REQUEST, 'Incorrect email or password');
     }
 
     return user;
