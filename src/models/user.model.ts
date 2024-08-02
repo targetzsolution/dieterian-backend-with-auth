@@ -41,6 +41,15 @@ const userSchema = new mongoose.Schema<UserDocument, UserModel>(
       enum: roles,
       default: 'user',
     },
+    imgURL: {
+      type: String,
+      trim: true
+    },
+    imgPublicId: {
+      type: String,
+      unique: true,
+      trim: true
+    }
   },
   {
     timestamps: true,

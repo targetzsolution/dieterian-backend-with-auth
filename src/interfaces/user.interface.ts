@@ -6,6 +6,8 @@ interface UserDocument {
   email: string;
   password: string;
   role: string;
+  imgURL: string;
+  imgPublicId: string;
 }
 
 interface UserModel extends Model<UserDocument> {
