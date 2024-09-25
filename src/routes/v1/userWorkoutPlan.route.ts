@@ -12,6 +12,10 @@ router
   .get(userWorkoutPlanController.getUserWorkoutPlanByUser);
 
 router
+  .route('/user/:userId')
+  .get(userWorkoutPlanController.getUserWorkoutPlanDataByUserId);
+
+router
   .route('/:userWorkoutPlanId')
   .get(userWorkoutPlanController.getUserWorkoutPlan);
 

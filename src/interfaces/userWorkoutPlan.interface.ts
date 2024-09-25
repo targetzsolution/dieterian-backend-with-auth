@@ -26,6 +26,7 @@ interface UserWorkoutPlanDocument {
     medicalCondition: boolean;
     workoutPlan: IWorkoutPlan;
     user: ObjectId;
+    planActive: boolean;
 }
 
 interface UserWorkoutPlanModel extends Model<UserWorkoutPlanDocument> {

@@ -17,6 +17,14 @@ const getUserWorkoutPlan = catchAsync(async (req: Request, res: Response): Promi
     res.send(userWorkoutPlan);
 });
 
+const getUserWorkoutPlanDataByUserId = catchAsync(async (req: Request, res: Response): Promise<void> => {
+    const userWorkoutPlan = await userWorkoutPlanService.getUserWorkoutPlanByUserId(req.params.userId as any);
+    if (!userWorkoutPlan) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'User workout plan not found');
+    }
+    res.send(userWorkoutPlan);
+});
+
 const getUserWorkoutPlanByUser = catchAsync(async (req: Request, res: Response): Promise<void> => {
     const userWorkoutPlan = await userWorkoutPlanService.getUserWorkoutPlanByUserId(req.params.userId as any);
     if (!userWorkoutPlan) {
@@ -46,4 +54,4 @@ const updateUserWorkoutPlan = catchAsync(async (req: Request, res: Response): Pr
     res.send(userWorkoutPlan);
 });
 
-export { createUserWorkoutPlan, getUserWorkoutPlan, getUserWorkoutPlanByUser, updateUserWorkoutPlan };
+export { createUserWorkoutPlan, getUserWorkoutPlan, getUserWorkoutPlanByUser, updateUserWorkoutPlan, getUserWorkoutPlanDataByUserId };

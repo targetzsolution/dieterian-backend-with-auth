@@ -45,7 +45,7 @@ export const getUserWorkoutPlanById = async (id: ObjectId): Promise<UserWorkoutP
 
 // Get workout plan by id
 export const getUserWorkoutPlanByUserId = async (user: { [k: string]: any }): Promise<UserWorkoutPlanDocument | null> => {
-    return UserWorkoutPlan.findOne({ user });
+    return UserWorkoutPlan.findOne({ user, planActive: true });
 };
 
 // Update user workout plan by id
