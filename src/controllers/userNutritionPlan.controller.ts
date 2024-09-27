@@ -17,6 +17,14 @@ const getUserNutritionPlan = catchAsync(async (req: Request, res: Response): Pro
     res.send(userNutritionPlan);
 });
 
+const getUserNutritionPlanDataByUserId = catchAsync(async (req: Request, res: Response): Promise<void> => {
+    const userNutritionPlan = await userNutritionPlanService.getUserNutritionPlanByUserId(req.params.userId as any);
+    if (!userNutritionPlan) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'User nutrition plan not found');
+    }
+    res.send(userNutritionPlan);
+});
+
 const getUserNutritionPlanByUser = catchAsync(async (req: Request, res: Response): Promise<void> => {
     const userNutritionPlan = await userNutritionPlanService.getUserNutritionPlanByUserId(req.params.userId as any);
     if (!userNutritionPlan) {
@@ -46,4 +54,4 @@ const updateUserNutritionPlan = catchAsync(async (req: Request, res: Response): 
     res.send(userNutritionPlan);
 });
 
-export { createUserNutritionPlan, getUserNutritionPlan, getUserNutritionPlanByUser, updateUserNutritionPlan };
+export { createUserNutritionPlan, getUserNutritionPlan, getUserNutritionPlanByUser, updateUserNutritionPlan, getUserNutritionPlanDataByUserId };

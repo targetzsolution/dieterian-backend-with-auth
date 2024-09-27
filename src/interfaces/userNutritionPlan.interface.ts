@@ -26,6 +26,7 @@ interface UserNutritionPlanDocument {
     medicalCondition: boolean;
     nutritionPlan: INutritionPlan;
     user: ObjectId;
+    planActive: boolean;
 }
 
 interface UserNutritionPlanModel extends Model<UserNutritionPlanDocument> {

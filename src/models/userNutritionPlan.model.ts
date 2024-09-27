@@ -9,6 +9,7 @@ const userNutritionPlanSchema = new mongoose.Schema<UserNutritionPlanDocument, U
         planEnd: { type: Date, required: true },
         medicalCondition: { type: Boolean, default: false },
         user: { type: mongoose.SchemaTypes.ObjectId, ref: 'User', autopopulate: true },
+        planActive: { type: Boolean, default: true },
         nutritionPlan: {
             ageCategory: { type: String, required: true },
             bmiCategory: { type: String, required: true },

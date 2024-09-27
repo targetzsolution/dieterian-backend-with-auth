@@ -13,6 +13,10 @@ router
     .get(auth(), userNutritionPlanController.getUserNutritionPlanByUser);
 
 router
+    .route('/user/id/:userId')
+    .get(auth(), userNutritionPlanController.getUserNutritionPlanDataByUserId);
+
+router
     .route('/:userNutritionPlanId')
     .get(auth(), userNutritionPlanController.getUserNutritionPlan);
 

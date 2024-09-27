@@ -44,9 +44,9 @@ export const getUserNutritionPlanById = async (id: ObjectId): Promise<UserNutrit
     return UserNutritionPlan.findById(id);
 };
 
-// Get nutrition plan by id
+// Get nutrition plan by user id
 export const getUserNutritionPlanByUserId = async (user: { [k: string]: any }): Promise<UserNutritionPlanDocument | null> => {
-    return UserNutritionPlan.findOne({ user });
+    return UserNutritionPlan.findOne({ user, planActive: true });
 };
 
 // Update user nutrition plan by id
