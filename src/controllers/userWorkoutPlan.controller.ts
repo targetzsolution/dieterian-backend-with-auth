@@ -5,7 +5,7 @@ import httpStatus from 'http-status';
 import ApiError from '../utils/ApiError';
 
 const createUserWorkoutPlan = catchAsync(async (req: Request, res: Response): Promise<void> => {
-    const userWorkoutPlan = await userWorkoutPlanService.createUserWorkoutPlan(req.body);
+    const userWorkoutPlan = await userWorkoutPlanService.createUserWorkoutPlan({ ...req.body, user: req.user });
     res.status(httpStatus.CREATED).send(userWorkoutPlan);
 });
 
@@ -18,7 +18,7 @@ const getUserWorkoutPlan = catchAsync(async (req: Request, res: Response): Promi
 });
 
 const getUserWorkoutPlanDataByUserId = catchAsync(async (req: Request, res: Response): Promise<void> => {
-    const userWorkoutPlan = await userWorkoutPlanService.getUserWorkoutPlanByUserId(req.params.userId as any);
+    const userWorkoutPlan = await userWorkoutPlanService.getUserWorkoutPlanByUserId(req.user as any);
     if (!userWorkoutPlan) {
         throw new ApiError(httpStatus.NOT_FOUND, 'User workout plan not found');
     }

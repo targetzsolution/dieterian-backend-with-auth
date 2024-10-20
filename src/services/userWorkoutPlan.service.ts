@@ -8,7 +8,7 @@ import httpStatus from "http-status";
 
 // Create a user workout plan
 export const createUserWorkoutPlan = async (userWorkoutPlanBody: { [k: string]: any }): Promise<UserWorkoutPlanDocument> => {
-    const userWorkoutPlan = await UserWorkoutPlan.findOne({ user: userWorkoutPlanBody.user });
+    const userWorkoutPlan = await UserWorkoutPlan.findOne({ user: userWorkoutPlanBody.user, planActive: true });
     if (userWorkoutPlan) {
         throw new ApiError(httpStatus.CONFLICT, 'User workout plan already exist');
     }
