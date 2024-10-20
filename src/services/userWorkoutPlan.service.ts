@@ -68,3 +68,14 @@ export const updateUserworkoutPlanById = async (id: ObjectId, date: Date, update
 
     return userWorkoutPlan;
 }
+
+export const deActivateUserWorkoutPlan = async (id: ObjectId) => {
+    const userWorkoutPlan = await getUserWorkoutPlanByUserId(id);
+    if (!userWorkoutPlan) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'User workout plan not found.');
+    }
+
+    userWorkoutPlan.planActive = false;
+
+    await (userWorkoutPlan as any).save();
+}

@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 import catchAsync from "../utils/catchAsync";
 import { bmiService, userNutritionPlanService, userWorkoutPlanService } from '../services/index.service';
 import httpStatus from 'http-status';
+import { deActivateUserWorkoutPlan } from '../services/userWorkoutPlan.service';
+import { deActivateUserNutritionPlan } from '../services/userNutritionPlan.service';
 
 const getDashboardData = catchAsync(async (req: Request, res: Response): Promise<void> => {
     const bmi = await bmiService.getBMIByUserId(req.params.userId as any);
@@ -24,13 +26,27 @@ const getDashboardData = catchAsync(async (req: Request, res: Response): Promise
     const generatePlanData = (plan: any, planType: string) => {
         const planStart = plan.planStart;
         let showPlanDay = Math.floor((new Date().getTime() - planStart.getTime()) / (24 * 60 * 60 * 1000));
-        if (showPlanDay < 0) showPlanDay = 0;
-        const monthSection = Math.floor(showPlanDay / 10);
-        const description = plan[`${planType}Plan`][`${planType}Days`][monthSection].description;
+        if (showPlanDay < 0) {
+            showPlanDay = 0;
+            const monthSection = Math.floor(showPlanDay / 10);
+            const description = plan[`${planType}Plan`][`${planType}Days`][monthSection].description;
 
-        return planType === 'nutrition'
-            ? { dietDay: showPlanDay + 1, description }
-            : { exerciseDay: showPlanDay + 1, description };
+            return planType === 'nutrition'
+                ? { dietDay: showPlanDay + 1, description }
+                : { exerciseDay: showPlanDay + 1, description };
+        } else if (showPlanDay > 30) {
+            planType === 'nutrition' ? deActivateUserNutritionPlan(req.params.userId as any) : deActivateUserWorkoutPlan(req.params.userId as any);
+            return planType === 'nutrition'
+                ? { warning: 'Please generate nutrition plan.' }
+                : { warning: 'Please generate workout plan.' };
+        } else {
+            const monthSection = Math.floor(showPlanDay / 10);
+            const description = plan[`${planType}Plan`][`${planType}Days`][monthSection].description;
+
+            return planType === 'nutrition'
+                ? { dietDay: showPlanDay + 1, description }
+                : { exerciseDay: showPlanDay + 1, description };
+        }
     };
 
     const userWorkoutPlanData = userWorkoutPlan ? generatePlanData(userWorkoutPlan, 'workout') : { warning: 'Please generate workout plan.' };

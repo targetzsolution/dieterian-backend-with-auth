@@ -69,3 +69,14 @@ export const updateUserNutritionPlanById = async (id: ObjectId, date: Date, upda
 
     return userNutritionPlan;
 }
+
+export const deActivateUserNutritionPlan = async (id: ObjectId) => {
+    const userNutritionPlan = await getUserNutritionPlanByUserId(id);
+    if (!userNutritionPlan) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'User nutrition plan not found.');
+    }
+
+    userNutritionPlan.planActive = false;
+
+    await (userNutritionPlan as any).save();
+}
