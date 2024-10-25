@@ -3,6 +3,7 @@ import catchAsync from '../utils/catchAsync';
 import { userNutritionPlanService } from '../services/index.service';
 import httpStatus from 'http-status';
 import ApiError from '../utils/ApiError';
+import moment from 'moment';
 
 const createUserNutritionPlan = catchAsync(async (req: Request, res: Response): Promise<void> => {
     const userNutritionPlan = await userNutritionPlanService.createUserNutritionPlan(req.body);
@@ -31,9 +32,9 @@ const getUserNutritionPlanByUser = catchAsync(async (req: Request, res: Response
         throw new ApiError(httpStatus.NOT_FOUND, 'User nutrition plan not found');
     }
 
-    const planStart = userNutritionPlan.planStart.getTime();
-    let showPlanDay = Math.floor((new Date(req.params.date as any).getTime() - planStart) / (24 * 60 * 60 * 1000));
-    if (showPlanDay < 0) showPlanDay = 0;
+    const planStart = moment(userNutritionPlan.planStart);
+    let showPlanDay = moment(req.params.date as any).diff(planStart, 'days');
+
     const monthSection = Math.floor(showPlanDay / 10);
     const monthSectionDay = showPlanDay % 10;
 

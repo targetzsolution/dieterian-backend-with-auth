@@ -5,6 +5,7 @@ import { NutritionPlan } from "../models/nutritionPlan.model";
 import { BMI } from "../models/bmi.model";
 import ApiError from "../utils/ApiError";
 import httpStatus from "http-status";
+import moment from "moment";
 
 // Create a user nutrition plan
 export const createUserNutritionPlan = async (userNutritionPlanBody: { [k: string]: any }): Promise<UserNutritionPlanDocument> => {
@@ -26,13 +27,11 @@ export const createUserNutritionPlan = async (userNutritionPlanBody: { [k: strin
     userNutritionPlanBody.nutritionPlan = nutritionPlan;
 
     // Plan start date
-    const now = new Date();
-    const planStartDate = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
+    const planStartDate = moment().format('YYYY-MM-DD');
     userNutritionPlanBody.planStart = planStartDate;
 
     // Plan end date
-    const planEndDate = new Date(planStartDate);
-    planEndDate.setUTCDate(planEndDate.getUTCDate() + 29);
+    const planEndDate = moment().add(29, 'days').format('YYYY-MM-DD');
     userNutritionPlanBody.planEnd = planEndDate;
 
 
@@ -57,8 +56,9 @@ export const updateUserNutritionPlanById = async (id: ObjectId, date: Date, upda
     }
 
     // Calculate day of month
-    const planStart = userNutritionPlan.planStart.getTime();
-    const planDay = Math.floor((new Date(date).getTime() - planStart) / (24 * 60 * 60 * 1000));
+    const planStart = moment(userNutritionPlan.planStart);
+    const planDay = moment(date).diff(planStart, 'days');
+
 
     const monthSection = Math.floor(planDay / 10);
     const monthSectionDay = planDay % 10;

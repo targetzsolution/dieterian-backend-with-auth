@@ -3,6 +3,7 @@ import catchAsync from '../utils/catchAsync';
 import { userWorkoutPlanService } from '../services/index.service';
 import httpStatus from 'http-status';
 import ApiError from '../utils/ApiError';
+import moment from 'moment';
 
 const createUserWorkoutPlan = catchAsync(async (req: Request, res: Response): Promise<void> => {
     const userWorkoutPlan = await userWorkoutPlanService.createUserWorkoutPlan({ ...req.body, user: req.user });
@@ -31,9 +32,8 @@ const getUserWorkoutPlanByUser = catchAsync(async (req: Request, res: Response):
         throw new ApiError(httpStatus.NOT_FOUND, 'User workout plan not found');
     }
 
-    const planStart = userWorkoutPlan.planStart.getTime();
-    let showPlanDay = Math.floor((new Date(req.params.date as any).getTime() - planStart) / (24 * 60 * 60 * 1000));
-    if (showPlanDay < 0) showPlanDay = 0;
+    const planStart = moment(userWorkoutPlan.planStart);
+    let showPlanDay = moment(req.params.date as any).diff(planStart, 'days');
     const monthSection = Math.floor(showPlanDay / 10);
     const monthSectionDay = showPlanDay % 10;
 

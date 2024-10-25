@@ -4,6 +4,7 @@ import { bmiService, userNutritionPlanService, userWorkoutPlanService } from '..
 import httpStatus from 'http-status';
 import { deActivateUserWorkoutPlan } from '../services/userWorkoutPlan.service';
 import { deActivateUserNutritionPlan } from '../services/userNutritionPlan.service';
+import moment from "moment";
 
 const getDashboardData = catchAsync(async (req: Request, res: Response): Promise<void> => {
     const bmi = await bmiService.getBMIByUserId(req.params.userId as any);
@@ -24,21 +25,15 @@ const getDashboardData = catchAsync(async (req: Request, res: Response): Promise
     }
 
     const generatePlanData = (plan: any, planType: string) => {
-        const planStart = plan.planStart;
-        let showPlanDay = Math.floor((new Date().getTime() - planStart.getTime()) / (24 * 60 * 60 * 1000));
-        if (showPlanDay < 0) {
-            showPlanDay = 0;
-            const monthSection = Math.floor(showPlanDay / 10);
-            const description = plan[`${planType}Plan`][`${planType}Days`][monthSection].description;
+        const planStart = moment(plan.planStart);
+        let showPlanDay = moment().diff(planStart, 'days');
 
-            return planType === 'nutrition'
-                ? { dietDay: showPlanDay + 1, description }
-                : { exerciseDay: showPlanDay + 1, description };
-        } else if (showPlanDay > 30) {
+        if (showPlanDay >= 30) {
             planType === 'nutrition' ? deActivateUserNutritionPlan(req.params.userId as any) : deActivateUserWorkoutPlan(req.params.userId as any);
             return planType === 'nutrition'
                 ? { warning: 'Please generate nutrition plan.' }
                 : { warning: 'Please generate workout plan.' };
+
         } else {
             const monthSection = Math.floor(showPlanDay / 10);
             const description = plan[`${planType}Plan`][`${planType}Days`][monthSection].description;
@@ -46,6 +41,7 @@ const getDashboardData = catchAsync(async (req: Request, res: Response): Promise
             return planType === 'nutrition'
                 ? { dietDay: showPlanDay + 1, description }
                 : { exerciseDay: showPlanDay + 1, description };
+
         }
     };
 

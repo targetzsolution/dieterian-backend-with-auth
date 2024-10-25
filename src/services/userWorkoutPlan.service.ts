@@ -5,6 +5,7 @@ import { WorkoutPlan } from "../models/workoutPlan.model";
 import { BMI } from "../models/bmi.model";
 import ApiError from "../utils/ApiError";
 import httpStatus from "http-status";
+import moment from "moment";
 
 // Create a user workout plan
 export const createUserWorkoutPlan = async (userWorkoutPlanBody: { [k: string]: any }): Promise<UserWorkoutPlanDocument> => {
@@ -26,13 +27,11 @@ export const createUserWorkoutPlan = async (userWorkoutPlanBody: { [k: string]: 
     userWorkoutPlanBody.workoutPlan = workoutPlan;
 
     // Plan start date
-    const now = new Date();
-    const planStartDate = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
+    const planStartDate = moment().format('YYYY-MM-DD');
     userWorkoutPlanBody.planStart = planStartDate;
 
     // Plan end date
-    const planEndDate = new Date(planStartDate);
-    planEndDate.setUTCDate(planEndDate.getUTCDate() + 29);
+    const planEndDate = moment().add(29, 'days').format('YYYY-MM-DD');
     userWorkoutPlanBody.planEnd = planEndDate;
 
     return UserWorkoutPlan.create(userWorkoutPlanBody);
@@ -56,8 +55,8 @@ export const updateUserworkoutPlanById = async (id: ObjectId, date: Date, update
     }
 
     // Calculate day of month
-    const planStart = userWorkoutPlan.planStart.getTime();
-    const planDay = Math.floor((new Date(date).getTime() - planStart) / (24 * 60 * 60 * 1000));
+    const planStart = moment(userWorkoutPlan.planStart);
+    const planDay = moment(date).diff(planStart, 'days');
 
     const monthSection = Math.floor(planDay / 10);
     const monthSectionDay = planDay % 10;
