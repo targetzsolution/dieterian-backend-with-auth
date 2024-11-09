@@ -6,7 +6,7 @@ import ApiError from '../utils/ApiError';
 import moment from 'moment';
 
 const createUserNutritionPlan = catchAsync(async (req: Request, res: Response): Promise<void> => {
-    const userNutritionPlan = await userNutritionPlanService.createUserNutritionPlan(req.body);
+    const userNutritionPlan = await userNutritionPlanService.createUserNutritionPlan({ ...req.body, user: req.user });
     res.status(httpStatus.CREATED).send(userNutritionPlan);
 });
 
@@ -19,7 +19,7 @@ const getUserNutritionPlan = catchAsync(async (req: Request, res: Response): Pro
 });
 
 const getUserNutritionPlanDataByUserId = catchAsync(async (req: Request, res: Response): Promise<void> => {
-    const userNutritionPlan = await userNutritionPlanService.getUserNutritionPlanByUserId(req.params.userId as any);
+    const userNutritionPlan = await userNutritionPlanService.getUserNutritionPlanByUserId(req.user as any);
     if (!userNutritionPlan) {
         throw new ApiError(httpStatus.NOT_FOUND, 'User nutrition plan not found');
     }

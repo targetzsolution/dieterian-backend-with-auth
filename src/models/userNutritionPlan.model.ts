@@ -18,10 +18,10 @@ const userNutritionPlanSchema = new mongoose.Schema<UserNutritionPlanDocument, U
                     description: { type: String, required: true },
                     diet: [
                         {
-                            t1: { type: String, default: "" },
+                            t1: { type: String, default: "" },    // time
                             t2: { type: String, default: "" },
                             t3: { type: String, default: "" },
-                            m1: { type: String, default: "" },
+                            m1: { type: String, default: "" },    // meal
                             m2: { type: String, default: "" },
                             m3: { type: String, default: "" },
                             c1: { type: Boolean },

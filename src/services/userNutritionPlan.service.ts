@@ -9,7 +9,7 @@ import moment from "moment";
 
 // Create a user nutrition plan
 export const createUserNutritionPlan = async (userNutritionPlanBody: { [k: string]: any }): Promise<UserNutritionPlanDocument> => {
-    const userNutritionPlan = await UserNutritionPlan.findOne({ user: userNutritionPlanBody.user });
+    const userNutritionPlan = await UserNutritionPlan.findOne({ user: userNutritionPlanBody.user, planActive: true });
     if (userNutritionPlan) {
         throw new ApiError(httpStatus.CONFLICT, 'User nutrition plan already exist');
     }

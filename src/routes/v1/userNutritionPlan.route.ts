@@ -13,7 +13,7 @@ router
     .get(auth(), userNutritionPlanController.getUserNutritionPlanByUser);
 
 router
-    .route('/user/id/:userId')
+    .route('/byUser')
     .get(auth(), userNutritionPlanController.getUserNutritionPlanDataByUserId);
 
 router
