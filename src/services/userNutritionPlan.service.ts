@@ -18,7 +18,7 @@ export const createUserNutritionPlan = async (userNutritionPlanBody: { [k: strin
     if (!bmi)
         throw new ApiError(httpStatus.NOT_FOUND, 'User BMI not found');
     else if (bmi.ageCategory === 'minor')
-        throw new ApiError(httpStatus.UNAUTHORIZED, 'No plan for underage person');
+        throw new ApiError(httpStatus.NOT_FOUND, 'No plan for underage person');
 
     const nutritionPlan = await NutritionPlan.findOne({ bmiCategory: bmi.bmiCategory, ageCategory: bmi.ageCategory });
     if (!nutritionPlan) {
@@ -56,7 +56,7 @@ export const updateUserNutritionPlanById = async (id: ObjectId, date: Date, upda
     }
 
     // Calculate day of month
-    const planStart = moment(userNutritionPlan.planStart);
+    const planStart = moment(userNutritionPlan.planStart).startOf('day');
     const planDay = moment(date).diff(planStart, 'days');
 
 
